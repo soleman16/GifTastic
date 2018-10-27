@@ -95,8 +95,7 @@ let gifManager = {
                 class: "dropdown-item",
                 text: currentTitle, 
                 href: currentUrl,
-                target: "_blank",
-                style: "white-space: normal;"
+                target: "_blank"
             })
     
             dropDownElement.append(menuItem);
