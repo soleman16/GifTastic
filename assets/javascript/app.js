@@ -2,13 +2,16 @@ let gifManager = {
     selectedGifs: [{}],
     favoriteGifs: [{}],
     gifLimit: 10,
-    getGifs: function (userSearch, limit){
+    /**
+     * Retrievs gifs corresponding to the team the user selected
+     */
+    getGifs: function (limit){
         let url = "https://api.giphy.com/v1/gifs/search?q=";
         let apiKey = "&api_key=VrVNHn3sUOMfhqftGc4ZMMu8vcTrbadC"; 
         let limitParameter = "&limit=" + limit;
 
         $.ajax({
-            url: url + userSearch + " football" + apiKey + limitParameter,
+            url: url + nfl.userSelectedTeam + " football" + apiKey + limitParameter,
             success: function(result) {
                 gifManager.clearGifs();
                 for(var index in result.data){
@@ -22,15 +25,27 @@ let gifManager = {
             }
         });
     },
+    /**
+     * clears the list of selected gifs
+     */
     clearSelectedGifs: function(){
         gifManager.selectedGifs = [{}];
     },
+    /**
+     * Removes the gifs from teh screen
+     */
     clearGifs: function(){
         $("#gif-column").empty();
     },
+    /**
+     * Clears the favorites section
+     */
     clearFavorites: function(){
         $(".favorites").empty();
     },
+    /**
+     * Downloads the Gif from the provided URL.
+     */
     download: function(url, fileName){
         var xhr = new XMLHttpRequest();
         xhr.open("GET", url, true);
@@ -47,23 +62,28 @@ let gifManager = {
         }
         xhr.send();
     },
+    /**
+     * Checks to see if the gif already exists. This is used to ensure
+     * the user doesn't add an already selected gif to their
+     * favorites section.
+     */
     doesGifExist: function(title){
-
         for (let index in gifManager.selectedGifs){
             let currentGif = gifManager.selectedGifs[index];
             if(currentGif.title && currentGif.title === title){
                 return true;
             }
         }
-    
         return false;
     },
-    clearDropDown: function(){
-        $(".dropdown-menu").empty();
-    },  
+    /**
+     * Displays the favorites dropdown on the screen
+     * and populates the dropdown with the user's favorite
+     * gifs.
+     */  
     displayFavorites: function(){
 
-        gifManager.clearDropDown();
+        gifManager.clearFavorites();
     
         let dropDownElement = $(".dropdown-menu");
     
@@ -75,15 +95,24 @@ let gifManager = {
                 class: "dropdown-item",
                 text: currentTitle, 
                 href: currentUrl,
-                target: "_blank"
+                target: "_blank",
+                style: "white-space: normal;"
             })
     
             dropDownElement.append(menuItem);
         }
     },
+    /**
+     * Used to fade out the error section on the screen
+     */
     fadeOut: function() {
         $("#error-message").fadeOut();
     },
+    /**
+     * Displays a card for each gif. The card contains the gif image,
+     * the title of the gif, the rating of the gif and the ability to
+     * interact with the gif.
+     */
     createGifCard: function(rating, animationUrl, stillUrl, title){
 
         let gifColumnDiv = $("#gif-column");
@@ -130,8 +159,16 @@ let gifManager = {
     }
 }
 
+/**
+ * nfl object containing the nfl teams and functions pertaining to behaviors
+ * associated to the teams
+ */
 let nfl = {
+    // this is needed because the nfl api requires the abbreviated team name
+    // to be passed in during a search
     abbreviatedTeamName: "",
+    // this is the team selected by the user, or entered in on the search
+    userSelectedTeam: "",
     displayedTeams: [{}],
     nflTeams: 
         [{
@@ -182,6 +219,9 @@ let nfl = {
             team: "Green Bay Packers",
             image: "assets/images/packers.gif"
         }],
+    /**
+     * Retrieves a list of teams from the nfl api
+     */
     getTeams: function(){
         $.ajax({
             url: "https://api.fantasydata.net/v3/nfl/stats/JSON/TeamSeasonStats/2018",
@@ -194,7 +234,10 @@ let nfl = {
             }
         });
     },
-    addLogos: function(nflTeams){
+    /**
+     * Displays the logs on the screen
+     */
+    addLogos: function(){
 
         for(let index in nfl.nflTeams){
     
@@ -213,7 +256,10 @@ let nfl = {
             gifLogoSectionDiv.append(teamImage);
         }
     },
-    getTeamInformation: function(teamName){
+    /**
+     * Returns additional information about the user selected team
+     */
+    getTeamInformation: function(){
         for(let index in nfl.displayedTeams){
     
             let currentTeam = nfl.displayedTeams[index];
@@ -222,12 +268,15 @@ let nfl = {
     
                 let currentTeamName = currentTeam.TeamName.toLowerCase();
         
-                if(teamName.toLowerCase().includes(currentTeamName)){
+                if(nfl.userSelectedTeam.toLowerCase().includes(currentTeamName)){
                     return currentTeam;
                 }
             }
         }
     },
+    /**
+     * retrives news about a given team from the nfl api
+     */
     getTeamNews: function(){
         $.ajax({
             url: "https://api.fantasydata.net/v3/nfl/stats/JSON/NewsByTeam/" + nfl.abbreviatedTeamName ,
@@ -237,12 +286,21 @@ let nfl = {
             }
         });
     },
+    /**
+     * clears the logos from the screen
+     */
     clearLogos: function(){
         $("#gif-logo-section").empty();
     },
+    /**
+     * clears the news section on the screen
+     */
     clearNews: function(){
         $("#team-news-column").empty();
     },
+    /**
+     * Displays news stories about the selected team on the screen
+     */
     displayNews: function(news){
         let teamNewsDiv = $("#team-news-column");
     
@@ -275,34 +333,47 @@ $(document).ready(function(){
     // Retrieve the object from storage
     let localDb = JSON.parse(localStorage.getItem('favorites'));
 
+    // if the favorites are in local storage they 
+    // will be used to populate the list of favorites
+    // otherwise the list of favorites will be blank
     if(localDb){
         gifManager.favoriteGifs = localDb;
         gifManager.displayFavorites();
     }
 
-    nfl.addLogos(nfl.nflTeams);
+    // renders all of the registered logos on the screen
+    nfl.addLogos();
 
+    // gets a list of nfl teams from the nfl api
     nfl.getTeams();
 
+    /**
+     * When this button is clicked, the team entered by the 
+     * user will be used to search the list of nfl teams. If
+     * the team is not in the list a message will be displayed
+     * indicating the team does not exist. If the team is found,
+     * the team will be added to the list of teams and the team
+     * logo will be displayed on the screen.
+     */
     $("#search-button").on("click", function(){
         event.preventDefault();
 
-        let userSearch = $("#search-text").val();
+        nfl.userSelectedTeam = $("#search-text").val();
 
-        let team = nfl.getTeamInformation(userSearch);
+        let team = nfl.getTeamInformation();
 
         if(team){
             let teamName = team.TeamName.toLowerCase();
 
             let userEnteredTeam = {
-                team: userSearch,
+                team: nfl.userSelectedTeam,
                 image: "assets/images/" + teamName + ".gif"
             }
             nfl.nflTeams.push(userEnteredTeam);
             gifManager.clearGifs();
             nfl.clearLogos();
             nfl.clearNews();
-            nfl.addLogos(nfl.nflTeams);
+            nfl.addLogos();
         }
         else{
             $("#error-message").show();
@@ -313,6 +384,9 @@ $(document).ready(function(){
 
     });
 
+    /**
+     * When this button is clicked, the selected gif(s) will be downloaded
+     */
     $(document).on("click", "#download-gifs-button", function(){
         for(let index in gifManager.selectedGifs){
             let currentUrl = gifManager.selectedGifs[index].url;
@@ -324,11 +398,19 @@ $(document).ready(function(){
         $(".card-checkbox").prop('checked', false);
     });
 
+    /**
+     * When this button is clicked it will clear the favorites from local
+     * storage and from the dropdown
+     */
     $(document).on("click", "#clear-favorites", function(){
         gifManager.clearFavorites();
         localStorage.clear();
     });
 
+    /**
+     * When this button is clicked it will add the selected gifs
+     * to local storage and display them in the 'favorites' dropdown
+     */
     $(document).on("click", "#favorite-gifs-button", function(){
 
         for(let index in gifManager.selectedGifs){
@@ -345,21 +427,39 @@ $(document).ready(function(){
         localStorage.setItem('favorites', JSON.stringify(gifManager.favoriteGifs));
     });
 
+    /**
+     * Retrieves 10 additional gifs of the selected team every time this
+     * button is clicked
+     */
     $(document).on("click", "#add-gifs-button", function(){
-        gifManager.getGifs(nfl.abbreviatedTeamName, gifManager.gifLimit + 10);
+        gifManager.getGifs(gifManager.gifLimit + 10);
     });
 
-    // user clicks one of the logos with the logos
+    /**
+     * This is called whenever the user clicks one of the logos. This will
+     * get the abbreviated team name from the list of teams.  It will then make two
+     * ajax calls:
+     * 
+     * 1) The Gif service to retrieve 10 gifs.  It will pass in the abbreviated team
+     *  name as one of the parameters.
+     * 
+     * 2) The NFL service to get the latest news for the selected team
+     */
     $(document).on("click", ".logo", function(){
-        let userSearch = $(this).attr("data-team-name");
-        let team = nfl.getTeamInformation(userSearch);
+        nfl.userSelectedTeam = $(this).attr("data-team-name");
+        let team = nfl.getTeamInformation();
         nfl.abbreviatedTeamName = team.Team;
         nfl.getTeamNews();
         gifManager.clearGifs();
         nfl.clearNews();
-        gifManager.getGifs(userSearch, gifManager.gifLimit);
+        gifManager.getGifs(gifManager.gifLimit);
     });
-
+    /**
+     * This function is called whenever the checkbox of a card is clicked.
+     * This will store the url and title of the gif in an array (if the gif
+     * does not already exist in the array).
+     * 
+     */
     $(document).on("click", ".card-checkbox", function(){
         let userSelectedGifUrl = $(this).attr("data-gif-url");
         let userSelectedGifTitle = $(this).attr("data-gif-title");
@@ -374,13 +474,20 @@ $(document).ready(function(){
         } 
     });
 
-    // user clicks one of the logos with the logos
+    /**
+     * This event is called when the user clicks the home link.
+     * This will hide all sections except the logo section
+     */
     $(document).on("click", ".home", function(){
         gifManager.clearGifs();
         nfl.clearNews();
     });
 
-    // one of the gifs
+    /**
+     * This function is called when the gif if clicked. This will
+     * look at the data-animation-state of the gif and switch to either
+     * the still state or the animated state.
+     */
     $(document).on("click", ".team-image", function(){
         let selectedImageState = $(this).attr("data-animation-state");
 

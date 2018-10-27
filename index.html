@@ -20,32 +20,32 @@
         </button>
         <a class="navbar-brand p-0" href="#"><img src="assets/images/nfl-news.jpeg" width="200" height="75"></a>
         
-        <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
+        <div class="collapse navbar-collapse text-md-left text-center" id="navbarTogglerDemo03">
             <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
                 <li class="nav-item active">
                     <a class="nav-link home" href="#">Home <span class="sr-only">(current)</span></a>
                 </li>
-                <li class="nav-item ml-5">
-                    <a id="clear-favorites" class="nav-link" href="#">Clear Favorites</a>
-                </li>
-                <div class="dropdown show ml-5">
+                <div class="dropdown show ml-md-5">
                     <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">My Favorite GIFs</a>
-                  
+                    
                     <div class="dropdown-menu favorites" aria-labelledby="dropdownMenuLink">
                         <!-- favorites go here -->
                     </div>
                 </div>
+                <li class="nav-item ml-md-5">
+                    <a id="clear-favorites" class="nav-link" href="#">Clear Favorites</a>
+                </li>
             </ul>
-            <form class="form-inline my-2 my-lg-0">
-            <input id="search-text" class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-            <button id="search-button" class="btn btn-outline-secondary my-2 my-sm-0" type="submit">Search</button>
+            <form class="form-inline my-2 my-lg-0 justify-content-center">
+                <input id="search-text" class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                <button id="search-button" class="btn btn-outline-secondary my-2 my-sm-0" type="submit">Search</button>
             </form>
         </div>
     </nav>
 
     <div id="main-content" class="container bg-white mt-5">
-        <div id="gif-logo-section" class="row mb-5">
-            <!-- add buttons here-->
+        <div id="gif-logo-section" class="row mb-5 justify-content-center">
+            <!-- add logos here-->
         </div>
         <div id="error-message" class="row mb-5 text-center text-danger" style="display:none">
             <div class="col-12">
@@ -53,17 +53,17 @@
             </div>    
         </div>
         <div id="gif-row" class="row">
-            <div id="team-news-column" class="col-4">
+            <div id="team-news-column" class="col-md-4 col-12 text-center text-md-left">
                 <!-- add news here-->
             </div>
-            <div id="gif-column" class="col-8">
+            <div id="gif-column" class="col-md-8 col-12 text-center">
                 <!-- add gifs here-->
             </div>
         </div>
     </div>
 
     <footer class="footer bg-dark p-2">
-        <div class="container">
+        <div class="container text-center">
             <button id="add-gifs-button" class="btn btn-outline-secondary my-2 mr-5 my-sm-0" type="submit">Add More GIFs</button>
             <button id="download-gifs-button" class="btn btn-outline-secondary my-2 mr-5 my-sm-0" type="submit">Download GIFs</button>
             <button id="favorite-gifs-button" class="btn btn-outline-secondary my-2 mr-5 my-sm-0" type="submit">Add to Favorites</button>
