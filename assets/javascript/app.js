@@ -10,7 +10,6 @@ let gifManager = {
         $.ajax({
             url: url + userSearch + " football" + apiKey + limitParameter,
             success: function(result) {
-                console.log(this.url);
                 gifManager.clearGifs();
                 for(var index in result.data){
                     let currentGif = result.data[index];
@@ -64,8 +63,6 @@ let gifManager = {
     },  
     displayFavorites: function(){
 
-        console.log("display favorites");
-    
         gifManager.clearDropDown();
     
         let dropDownElement = $(".dropdown-menu");
@@ -77,11 +74,15 @@ let gifManager = {
             let menuItem = $("<a>", {
                 class: "dropdown-item",
                 text: currentTitle, 
-                href: currentUrl
+                href: currentUrl,
+                target: "_blank"
             })
     
             dropDownElement.append(menuItem);
         }
+    },
+    fadeOut: function() {
+        $("#error-message").fadeOut();
     },
     createGifCard: function(rating, animationUrl, stillUrl, title){
 
@@ -236,19 +237,6 @@ let nfl = {
             }
         });
     },
-    displayTeamHeading: function(){
-        let teamHeadingRow = $("#team-heading");
-        
-        let teamHeadingElement = $("<h1>", {
-            class: "text-center",
-            text: nfl.abbreviatedTeamName
-        })
-    
-        teamHeadingRow.append(teamHeadingElement);
-    },
-    clearTeamHeading: function(){
-        $("#team-heading").empty();
-    },
     clearLogos: function(){
         $("#gif-logo-section").empty();
     },
@@ -303,18 +291,26 @@ $(document).ready(function(){
 
         let team = nfl.getTeamInformation(userSearch);
 
-        let teamName = team.TeamName.toLowerCase();
+        if(team){
+            let teamName = team.TeamName.toLowerCase();
 
-        let userEnteredTeam = {
-            team: userSearch,
-            image: "assets/images/" + teamName + ".gif"
+            let userEnteredTeam = {
+                team: userSearch,
+                image: "assets/images/" + teamName + ".gif"
+            }
+            nfl.nflTeams.push(userEnteredTeam);
+            gifManager.clearGifs();
+            nfl.clearLogos();
+            nfl.clearNews();
+            nfl.addLogos(nfl.nflTeams);
         }
-        nfl.nflTeams.push(userEnteredTeam);
-        gifManager.clearGifs();
-        nfl.clearLogos();
-        nfl.clearNews();
-        nfl.clearTeamHeading();
-        nfl.addLogos(nfl.nflTeams);
+        else{
+            $("#error-message").show();
+            gifManager.clearGifs();
+            nfl.clearNews();
+            setTimeout(gifManager.fadeOut, 5000);
+        }
+
     });
 
     $(document).on("click", "#download-gifs-button", function(){
@@ -356,12 +352,9 @@ $(document).ready(function(){
     // user clicks one of the logos with the logos
     $(document).on("click", ".logo", function(){
         let userSearch = $(this).attr("data-team-name");
-        console.log(userSearch);
         let team = nfl.getTeamInformation(userSearch);
         nfl.abbreviatedTeamName = team.Team;
         nfl.getTeamNews();
-        nfl.clearTeamHeading();
-        nfl.displayTeamHeading();
         gifManager.clearGifs();
         nfl.clearNews();
         gifManager.getGifs(userSearch, gifManager.gifLimit);
@@ -383,7 +376,6 @@ $(document).ready(function(){
 
     // user clicks one of the logos with the logos
     $(document).on("click", ".home", function(){
-        nfl.clearTeamHeading();
         gifManager.clearGifs();
         nfl.clearNews();
     });
