@@ -195,10 +195,10 @@ let nfl = {
     },
     addLogos: function(nflTeams){
 
-        for(let index in nflTeams){
+        for(let index in nfl.nflTeams){
     
-            let image = nflTeams[index].image;
-            let team = nflTeams[index].team;
+            let image = nfl.nflTeams[index].image;
+            let team = nfl.nflTeams[index].team;
     
             let gifLogoSectionDiv = $("#gif-logo-section");
     
@@ -309,12 +309,12 @@ $(document).ready(function(){
             team: userSearch,
             image: "assets/images/" + teamName + ".gif"
         }
-        nflTeams.push(userEnteredTeam);
-        clearGifs();
-        clearLogos();
-        clearNews();
-        clearTeamHeading();
-        addLogos(nflTeams);
+        nfl.nflTeams.push(userEnteredTeam);
+        gifManager.clearGifs();
+        nfl.clearLogos();
+        nfl.clearNews();
+        nfl.clearTeamHeading();
+        nfl.addLogos(nfl.nflTeams);
     });
 
     $(document).on("click", "#download-gifs-button", function(){
@@ -334,7 +334,12 @@ $(document).ready(function(){
     });
 
     $(document).on("click", "#favorite-gifs-button", function(){
-        gifManager.favoriteGifs = gifManager.selectedGifs;
+
+        for(let index in gifManager.selectedGifs){
+            let currentGif = gifManager.selectedGifs[index];
+            gifManager.favoriteGifs.push(currentGif);
+        }
+
         gifManager.clearSelectedGifs();
         gifManager.displayFavorites();
 
