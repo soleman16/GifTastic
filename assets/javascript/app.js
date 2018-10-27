@@ -341,7 +341,7 @@ $(document).ready(function(){
         $(".card-checkbox").prop('checked', false);
        
         // Put the object into storage
-        localStorage.setItem('favorites', JSON.stringify(gifManager.selectedGifs));
+        localStorage.setItem('favorites', JSON.stringify(gifManager.favoriteGifs));
     });
 
     $(document).on("click", "#add-gifs-button", function(){
