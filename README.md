@@ -1,74 +1,47 @@
-# GifTastic
+# NFL GifTastic
 
-## Before You Begin
+## About NFL Giftastic
 
-1. Hit the GIPHY API.
+This application is for all you NFL enthusiasts. You can search by any NFL team and view Gifs or new about that NFL teams.  If you find a Gif you like, you can save it to your favorites or even download it to your computer. If you accidentally add a Gif to your favorites, have no fear, you can always delete it.
 
-    1. Fool around with the GIPHY API. Giphy API.
+## How did we accomplish all of this?
 
-    1. Be sure to read about these GIPHY parameters (hint, hint):
-        1. q
-        1. limit
-        1. rating
+### RESTFul APIs
 
-    1. Like many APIs, GIPHY requires developers to use a key to access their API data. To use the GIPHY API, you'll need a GIPHY account (don't worry, it's free!) and then obtain an API Key by creating an app.
+The NFL Giftastic application only uses two APIs.
 
-    1. Make sure you switch the protocol in the query URL from http to https, or the app may not work properly when deployed to Github Pages.
+    1. GIPHY API
 
-1. Watch the demo video
+        https://developers.giphy.com/
 
-1. You should have a high-level understanding of how this assignment works before attempting to code it.
+        GIPHY's APIs make it dead simple for developers to incorporate this vast library right inside of their apps to deliver highly interactive content that is proven to increase daily engagement across all types of apps; messaging, chat, dating, creation, community, and more.
 
-## Submission on BCS
+        The GIPHY API implements a REST-like interface. Connections can be made with any HTTP or HTTPS enabled programming language. The GIPHY API also implements CORS, allowing you to connect to GIPHY from JavaScript / Web browsers on your own domain. The GIPHY API provides multiple file sizes, dimensions, and formats of every GIF to meet every clients potential needs.
 
-1. Please submit both the deployed Github.io link to your homework AND the link to the Github Repository!
+    1. Hit the GIPHY API.
 
-## Instructions
+        https://developer.fantasydata.com/
 
-1. Before you can make any part of our site work, you need to create an array of strings, each one related to a topic that interests you. Save it to a variable called topics.
+        FantasyData API solutions are web APIs, developed using REST web services. REST web services (also called RESTful web APIs) are APIs that are implemented using REST (Representational State Transfer) architecture. FantasyData.com has opted to use REST architecture for its APIs because of REST’s ease of use and high performance.
 
-    1. We chose animals for our theme, but you can make a list to your own liking.
+### JavaScript Libraries
 
-1. Your app should take the topics in this array and create buttons in your HTML.
+    1. jQuery
 
-    1. Try using a loop that appends a button for each string in the array.
+    This is a single page application (SPA) that leverages jQuery to render the HTML. The jQuery library has a full suite of Ajax capabilities. The functions and methods therein allow us to load data from the server without a browser page refresh.  Ajax was used to talk to the 3rd party RESTful APIs.
 
-1. When the user clicks on a button, the page should grab 10 static, non-animated gif images from the GIPHY API and place them on the page.
+    1. Bootstrap
 
-1. When the user clicks one of the still GIPHY images, the gif should animate. If the user clicks the gif again, it should stop playing.
+### CSS Libraries
 
-1. Under every gif, display its rating (PG, G, so on).
+    1. Custom CSS
 
-    1. This data is provided by the GIPHY API.
+    Custom CSS was used to give this page it's on look and feel and not be so Bootstrap-ish.
 
-    1. Only once you get images displaying with button presses should you move on to the next step.
+    1. Bootstrap CSS
 
-1. Add a form to your page takes the value from a user input box and adds it into your topics array. Then make a function call that takes each topic in the array remakes the buttons on the page.
+    Bootsrap CSS was used to give the front-end it's beautiful look and feel. In addition, Bootstrap was used to allow for a responsive design.
 
-1. Deploy your assignment to Github Pages.
+### Local Storage
 
-1. Rejoice! You just made something really cool.
-
-## Bonus Goals
-
-1. Ensure your app is fully mobile responsive.
-
-1. Allow users to request additional gifs to be added to the page.
-
-    1. Each request should ADD 10 gifs to the page, NOT overwrite the existing gifs.
-
-1. List additional metadata (title, tags, etc) for each gif in a clean and readable format.
-
-1. Include a 1-click download button for each gif, this should work across device types.
-
-1. Integrate this search with additional APIs such as OMDB, or Bands in Town. Be creative and build something you are proud to showcase in your portfolio
-
-1. Allow users to add their favorite gifs to a favorites section.
-
-    1. This should persist even when they select or add a new topic.
-
-    1. If you are looking for a major challenge, look into making this section persist even when the page is reloaded (via localStorage or cookies).
-
-## Reminder: Submission on BCS
-
-Please submit both the deployed Github.io link to your homework AND the link to the Github Repository!
+    The localStorage object stores the data with no expiration date. The data will not be deleted when the browser is closed, and will be available the next day, week, or year.  In this project localStorate is used to save your favorite Gifs.
