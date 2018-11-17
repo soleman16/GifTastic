@@ -10,7 +10,7 @@ This application is for all you NFL enthusiasts. You can search by any NFL team 
 
 The NFL Giftastic application only uses two APIs.
 
-    1. GIPHY API
+1. GIPHY API
 
         https://developers.giphy.com/
 
@@ -18,7 +18,7 @@ The NFL Giftastic application only uses two APIs.
 
         The GIPHY API implements a REST-like interface. Connections can be made with any HTTP or HTTPS enabled programming language. The GIPHY API also implements CORS, allowing you to connect to GIPHY from JavaScript / Web browsers on your own domain. The GIPHY API provides multiple file sizes, dimensions, and formats of every GIF to meet every clients potential needs.
 
-    1. Hit the GIPHY API.
+1. Hit the GIPHY API.
 
         https://developer.fantasydata.com/
 
@@ -26,19 +26,19 @@ The NFL Giftastic application only uses two APIs.
 
 ### JavaScript Libraries
 
-    1. jQuery
+1. jQuery
 
     This is a single page application (SPA) that leverages jQuery to render the HTML. The jQuery library has a full suite of Ajax capabilities. The functions and methods therein allow us to load data from the server without a browser page refresh.  Ajax was used to talk to the 3rd party RESTful APIs.
 
-    1. Bootstrap
+1. Bootstrap
 
 ### CSS Libraries
 
-    1. Custom CSS
+1. Custom CSS
 
     Custom CSS was used to give this page it's on look and feel and not be so Bootstrap-ish.
 
-    1. Bootstrap CSS
+1. Bootstrap CSS
 
     Bootsrap CSS was used to give the front-end it's beautiful look and feel. In addition, Bootstrap was used to allow for a responsive design.
 
